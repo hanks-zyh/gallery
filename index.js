@@ -18,7 +18,9 @@ function saveToCloud(img) {
   };
 
   request(options, function (error, response, body) {
-    if (error) throw new Error(error);
+    if (error) {
+      console.log(error)
+    }
     console.log(body);
   });
 }
@@ -31,7 +33,11 @@ function parseHtml(html) {
     var a = article.find('.post-image>a>img')
     var info = article.find('.post-details>h2>a')
     var url = a.attr('src')
-    var list = a.attr('srcset').split(',')
+    var srcset = a.attr('srcset');
+    if(!srcset){
+      return
+    }
+    var list = srcset.split(',')
     var url_hd = list[list.length-1].split(' ')[1]
     var title = info.text()
 
@@ -50,7 +56,9 @@ function getHtml(url) {
   var options = { method: 'GET', url: url };
 
   request(options, function (error, response, body) {
-    if (error) throw new Error(error);
+    if (error) {
+      console.log(error)
+    }
     parseHtml(body)
   });
 
